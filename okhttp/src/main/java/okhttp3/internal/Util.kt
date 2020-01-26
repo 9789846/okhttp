@@ -532,6 +532,15 @@ internal fun <E> MutableList<E>.addIfAbsent(element: E) {
 @JvmField
 internal val assertionsEnabled = OkHttpClient::class.java.desiredAssertionStatus()
 
+/**
+ * Returns the string "OkHttp" unless the library has been shaded for inclusion in another library.
+ * In such cases it'll return a longer string like "com.example.shaded.okhttp3.OkHttp". In large
+ * applications it's possible to have multiple OkHttp instances; this makes it clear which is which.
+ */
+@JvmField
+internal val okHttpName =
+    OkHttpClient::class.java.name.removePrefix("okhttp3.").removeSuffix("Client")
+
 @Suppress("NOTHING_TO_INLINE")
 internal inline fun Any.assertThreadHoldsLock() {
   if (assertionsEnabled && !Thread.holdsLock(this)) {
